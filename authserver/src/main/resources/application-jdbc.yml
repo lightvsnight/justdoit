@@ -1,0 +1,34 @@
+spring:
+  h2:
+    console:
+      path: /h2-console
+      # 开启 h2 web consloe,默认为 false
+      enabled: true
+      settings:
+        web-admin-password: admin
+        web-allow-others: true   # false 禁止远程 Web 访问 H2 数据库的信息
+        trace: true  # false 避免在系统控制台中输出 trace 级别的日志信息
+  datasource:
+    # 数据库连接密码,默认为空,需要在 SQL 脚本内使用 SQL 语句设置
+    # 使用 H2 内存模式的数据库连接方式
+    # 项目启动该自动创建数据库, ~表示数据库创建在用户目录下
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: root
+
+#  ssl:
+#    bundle:
+#      jks:
+#        demo-authorizationserver:
+#          key:
+#            alias: demo-authorizationserver-sample
+#            password: password
+#          keystore:
+#            location: classpath:keystore.p12
+#            password: password
+#            type: PKCS12
+#          truststore:
+#            location: classpath:keystore.p12
+#            password: password
+#            type: PKCS12

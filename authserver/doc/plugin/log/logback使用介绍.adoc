@@ -1,0 +1,40 @@
+
+
+
+ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP 是 Logback 日志框架中的一个类，用于基于时间和大小的滚动策略。
+在 Logback 配置文件（例如 logback.xml）中，你可能会看到类似如下的配置：
+
+<appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>logFile.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+    <fileNamePattern>archive/%d{yyyy-MM-dd}/%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+    <maxFileSize>10MB</maxFileSize>
+    <maxHistory>30</maxHistory>
+    <totalSizeCap>1GB</totalSizeCap>
+    </rollingPolicy>
+    <encoder>
+        <pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</pattern>
+    </encoder>
+</appender>
+
+在这个配置中，SizeAndTimeBasedRollingPolicy 定义了日志文件的滚动策略：
+
+fileNamePattern 定义了滚动日志文件的存储路径和文件名格式。
+
+maxFileSize 定义了单个日志文件的最大大小。
+
+maxHistory 定义了日志文件保留的最大天数或滚动文件数。
+
+totalSizeCap 定义了所有滚动日志文件的总大小上限。
+
+如果你遇到关于 ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP 的问题，可能是配置不正确或者需要更新 Logback 版本。具体解决方案需要根据实际遇到的错误详细信息来确定。
+
+
+参考文献：
+https://blog.csdn.net/chenjian723122704/article/details/126500993
+
+滚动策略
+
+TimeBasedRollingPolicy：可能是最受欢迎的滚动策略。它根据时间定义翻转策略，例如按天或按月。
+TimeBasedRollingPolicy承担滚动和触发所述翻转的责任。实际上，TimeBasedTriggeringPolicy实现了RollingPolicy和TriggeringPolicy接口。
+SizeAndTimeBasedRollingPolicy：有时您可能希望按日期归档文件，但同时限制每个日志文件的大小，特别是如果后处理工具对日志文件施加大小限制。为了满足此要求，logback 提供了 SizeAndTimeBasedRollingPolicy ，它是TimeBasedRollingPolicy的一个子类，实现了基于时间和日志文件大小的翻滚策略。

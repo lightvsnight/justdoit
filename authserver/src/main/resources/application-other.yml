@@ -1,0 +1,34 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        #默认值访问health,info端点  用*可以包含全部端点
+        include: *
+      #修改访问路径 2.0之前默认是/; 2.0默认是/actuator可以通过这个属性值修改
+      base-path: /actuator
+  endpoint:
+    jmx:
+      exposure:
+        include: *
+    shutdown:
+      enabled: true #打开shutdown端点
+    info:
+      enabled: true
+      git:
+        mode: simple # full
+    health:
+      show-details: always  #显示健康具体信息  默认不会显示详细信息
+
+
+
+
+#自定义info端点查看应用相关的信息info:
+info:
+  app:
+    name: @project.name@
+    version: @project.version@
+    description: @project.description@
+    encoding: @project.build.sourceEncoding@
+    java:
+      version: @java.version@
+
