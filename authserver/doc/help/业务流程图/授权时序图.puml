@@ -1,0 +1,9 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+用户 -> Client: 访问 localhost:8080/client/index.html
+Client -> authorizationServer:  请求授权服务器,并确认客户端用户的授权方式
+authorizationServer --> Client: 返回用户在客户端注册的信息，以及token信息（token的时效性）
+Client --> 用户: 根据用户信息，查询用户权限和角色；并进行响应
+@enduml

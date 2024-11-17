@@ -1,0 +1,116 @@
+= AsciiDoc Article Title
+Firstname Lastname <author@asciidoctor.org>
+3.0, July 29, 2022: AsciiDoc article template
+:toc:
+:icons: font
+:url-quickref: https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
+
+Content entered directly below the header but before the first section heading is called the preamble.
+
+== 问题: Extracted SQL state class '22' from value '22001'
+.类代码22：数据异常
+|===
+| SQLSTATE值|含义
+| 22001 | 字符数据，发生右截断；例如，更新或插入值对于列来说太长（字符串），或者日期时间值由于太小而不能赋给主机变量。
+| 22002	| 检测到空值或缺少指示符参数；例如，不能将空值赋给主机变量，因为没有指定指示符变量。
+| 22003	| 数字值超出范围。
+| 22004	| 不能从定义为 PARAMETER STYLE GENERAL 的过程或者从用非空自变量调用的类型保留方法中返回空值。
+| 22007	| 检测到无效的日期时间格式；即指定了无效的字符串表示法或值。
+| 22008	| 发生日期时间字段溢出；例如，对日期或时间戳记算术运算的结果不在有效日期范围之内。
+| 2200G	| 大多数特定类型都不匹配。
+| 22011	| 发生子字符串错误；例如，SUBSTR 的自变量超出范围。
+| 22012	| 用零作除数是无效的。
+| 22018	| 对于 CAST、DECIMAL、FLOAT、或 INTEGER 标量函数，字符值是无效的。
+| 22019	| LIKE 谓词有无效转义字符。
+| 22021	| 某字符不在编码字符集中。
+| 22024	| 以 NUL 结束的输入主机变量或参数不包含 NUL。
+| 22025	| LIKE 谓词字符串模式包含无效的转义字符。
+| 2202D	| 配合变异方法使用了空实例。
+| 2202H	| 在 TABLESAMPLE 子句中指定的样本大小无效。
+| 22501	| 变长字符串的长度控制字段为负值或大于最大值。
+| 22504	| 混合数据值是无效的。
+| 22506	| 对日期时间专用寄存器的引用无效，因为 TOD 时钟发生故障或操作系统时区参数超出范围。
+| 22522	| CCSID 值根本无效，对数据类型或子类型无效，或对编码方案无效。
+| 22526	| 键变换函数没有生成任何行或生成了重复的行。
+| 22527	| 对多行 INSERT 操作检测到了无效的输入数据。
+|===
+This is a paragraph with a *bold* word and an _italicized_ word.
+
+.Image caption
+image::image-file-name.png[I am the image alt text.]
+
+This is another paragraph.footnote:[I am footnote text and will be displayed at the bottom of the article.]
+
+=== Second level heading
+
+.Unordered list title
+* list item 1
+** nested list item
+*** nested nested list item 1
+*** nested nested list item 2
+* list item 2
+
+This is a paragraph.
+
+.Example block title
+====
+Content in an example block is subject to normal substitutions.
+====
+
+.Sidebar title
+****
+Sidebars contain aside text and are subject to normal substitutions.
+****
+
+==== Third level heading
+
+[#id-for-listing-block]
+.Listing block title
+----
+Content in a listing block is subject to verbatim substitutions.
+Listing block content is commonly used to preserve code input.
+----
+
+===== Fourth level heading
+
+.Table title
+|===
+|Column heading 1 |Column heading 2
+
+|Column 1, row 1
+|Column 2, row 1
+
+|Column 1, row 2
+|Column 2, row 2
+|===
+
+====== Fifth level heading
+
+[quote,firstname lastname,movie title]
+____
+I am a block quote or a prose excerpt.
+I am subject to normal substitutions.
+____
+
+[verse,firstname lastname,poem title and more]
+____
+I am a verse block.
+  Indents and endlines are preserved in verse blocks.
+____
+
+== First level heading
+
+TIP: There are five admonition labels: Tip, Note, Important, Caution and Warning.
+
+// I am a comment and won't be rendered.
+
+. ordered list item
+.. nested ordered list item
+. ordered list item
+
+The text at the end of this sentence is cross referenced to <<_third_level_heading,the third level heading>>
+
+== First level heading
+
+This is a link to the https://docs.asciidoctor.org/home/[Asciidoctor documentation].
+This is an attribute reference {url-quickref}[that links this text to the AsciiDoc Syntax Quick Reference].

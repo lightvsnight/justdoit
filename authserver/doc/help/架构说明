@@ -1,0 +1,5 @@
+架构说明
+jdk 1.8
+认证服务端  spring-security-oauth2-authorization-server 0.4.3 版本
+-- 说明： 目前 spring-security-oauth2-authorization-server 版本 支持jdk1.8版本的为 1.0.0 版本以下。
+
