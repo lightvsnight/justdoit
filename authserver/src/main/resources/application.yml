@@ -1,62 +1,14 @@
-server:
-  port: 9001
-
 spring:
-  devtools: other,jdbc
-  security:
-    oauth2:
-      client:
-        registration:
-          google-idp:
-            provider: google
-            client-id: ${GOOGLE_CLIENT_ID:google-client-id}
-            client-secret: ${GOOGLE_CLIENT_SECRET:google-client-secret}
-            scope: openid, https://www.googleapis.com/auth/userinfo.profile, https://www.googleapis.com/auth/userinfo.email
-            client-name: Sign in with Google
-          github-idp:
-            provider: github
-            client-id: ${GITHUB_CLIENT_ID:github-client-id}
-            client-secret: ${GITHUB_CLIENT_SECRET:github-client-secret}
-            scope: user:email, read:user
-            client-name: Sign in with GitHub
-        provider:
-          google:
-            user-name-attribute: email
-          github:
-            user-name-attribute: login
-        oidc-client:
-          registration:
-            client-id: "oidc-client"
-            client-secret: "{noop}secret"
-            client-authentication-methods:
-              - "client_secret_basic"
-            authorization-grant-types:
-              - "authorization_code"
-              - "refresh_token"
-            redirect-uris:
-              - "http://127.0.0.1:8080/login/oauth2/code/oidc-client"
-            post-logout-redirect-uris:
-              - "http://127.0.0.1:8080/"
-            scopes:
-              - "openid"
-              - "profile"
-          require-authorization-consent: true
-    user:
-      name: user
-      password: password
-      roles: ADMIN
+  profiles:
+    active: dev
+  config:
+    additional-location: classpath:/application-other.yml
 
-logging:
-  config: classpath:logback-spring.xml
-  charset:
-    file: utf-8
-  file:
-    name: authserver
-  level:
-    root: info
-    org.springframework.web: INFO
-    org.springframework.security: INFO
-    org.springframework.security.oauth2: INFO
+
+
+
+
+
 
 
 
