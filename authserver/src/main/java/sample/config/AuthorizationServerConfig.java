@@ -138,6 +138,8 @@ public class AuthorizationServerConfig {
 	// @formatter:off
 	@Bean
 	public JdbcRegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
+
+
 		RegisteredClient messagingClient = RegisteredClient.withId(UUID.randomUUID().toString())
 				.clientId("messaging-client")
 				.clientSecret("{noop}secret")
