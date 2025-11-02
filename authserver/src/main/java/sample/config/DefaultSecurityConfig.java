@@ -15,6 +15,8 @@
  */
 package sample.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import sample.federation.FederatedIdentityAuthenticationSuccessHandler;
 
 import org.springframework.context.annotation.Bean;
@@ -46,12 +48,13 @@ public class DefaultSecurityConfig {
 		http
 				.authorizeHttpRequests(authorize ->
 						authorize
-								.requestMatchers("/assets/**", "/login").permitAll()
+								.requestMatchers("/assets/**","/login","/error").permitAll()
 								.anyRequest().authenticated()
 				)
 				.formLogin(formLogin ->
 						formLogin
-								.loginPage("/login")
+								.loginPage("/login").defaultSuccessUrl("/home").failureUrl("/error")
+
 				)
 				.oauth2Login(oauth2Login ->
 						oauth2Login
@@ -71,8 +74,8 @@ public class DefaultSecurityConfig {
 	@Bean
 	public UserDetailsService users() {
 		UserDetails user = User.withDefaultPasswordEncoder()
-				.username("user1")
-				.password("password")
+				.username("user")
+				.password("user")
 				.roles("USER")
 				.build();
 		return new InMemoryUserDetailsManager(user);

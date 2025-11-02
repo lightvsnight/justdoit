@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package sample.web;
+package sample.modules.login.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,4 +30,8 @@ public class LoginController {
 		return "login";
 	}
 
+	@GetMapping("/home")
+	public String home() {
+		return "home";
+	}
 }

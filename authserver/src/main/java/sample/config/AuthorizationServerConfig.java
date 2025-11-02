@@ -21,6 +21,8 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
+import org.springframework.security.oauth2.server.authorization.settings.ConfigurationSettingNames;
 import sample.authentication.DeviceClientAuthenticationProvider;
 import sample.federation.FederatedIdentityIdTokenCustomizer;
 import sample.jose.Jwks;
@@ -67,6 +69,10 @@ import static org.springframework.security.oauth2.server.authorization.config.an
  */
 @Configuration(proxyBeanMethods = false)
 public class AuthorizationServerConfig {
+
+	/**
+	 * 当前配置地址是，默认授权地址。
+	 */
 	private static final String CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";
 
 	@Bean
@@ -100,11 +106,17 @@ public class AuthorizationServerConfig {
 
 		OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = authorizationServer();
 
+		
+		
 		// @formatter:off
 		http
 				.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
 				.with(authorizationServerConfigurer, (authorizationServer) ->
 						authorizationServer
+								
+								.registeredClientRepository(registeredClientRepository)
+								//authorizationService(): TheOAuth2AuthorizationService用于管理新的和现有的授权。
+//								.authorizationService()
 								.deviceAuthorizationEndpoint(deviceAuthorizationEndpoint ->
 										deviceAuthorizationEndpoint.verificationUri("/activate")
 								)
@@ -135,74 +147,96 @@ public class AuthorizationServerConfig {
 		return http.build();
 	}
 
+
+	/**
+	 * 以下内容，通过jdbc，初始化客户端信息。
+	 *  需要重写一下存储逻辑，在以下存储逻辑中，我们只能使用，springoauth2给出的固定表
+	 *  registeredClientRepository(): TheRegisteredClientRepository(必填项) 用于管理新客户和现有客户。
+	 * @param jdbcTemplate
+	 * @return
+	 */
 	// @formatter:off
 	@Bean
 	public JdbcRegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
 
-
-		RegisteredClient messagingClient = RegisteredClient.withId(UUID.randomUUID().toString())
-				.clientId("messaging-client")
-				.clientSecret("{noop}secret")
-				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-				.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-				.redirectUri("http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc")
-				.redirectUri("http://127.0.0.1:8080/authorized")
-				.postLogoutRedirectUri("http://127.0.0.1:8080/logged-out")
-				.scope(OidcScopes.OPENID)
-				.scope(OidcScopes.PROFILE)
-				.scope("message.read")
-				.scope("message.write")
-				.scope("user.read")
-				.clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
-				.build();
-
-		RegisteredClient deviceClient = RegisteredClient.withId(UUID.randomUUID().toString())
-				.clientId("device-messaging-client")
-				.clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
-				.authorizationGrantType(AuthorizationGrantType.DEVICE_CODE)
-				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-				.scope("message.read")
-				.scope("message.write")
-				.build();
-
-		RegisteredClient tokenExchangeClient = RegisteredClient.withId(UUID.randomUUID().toString())
-				.clientId("token-client")
-				.clientSecret("{noop}token")
-				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-				.authorizationGrantType(new AuthorizationGrantType("urn:ietf:params:oauth:grant-type:token-exchange"))
-				.scope("message.read")
-				.scope("message.write")
-				.build();
-
-		RegisteredClient mtlsDemoClient = RegisteredClient.withId(UUID.randomUUID().toString())
-				.clientId("mtls-demo-client")
-				.clientAuthenticationMethod(ClientAuthenticationMethod.TLS_CLIENT_AUTH)
-				.clientAuthenticationMethod(ClientAuthenticationMethod.SELF_SIGNED_TLS_CLIENT_AUTH)
-				.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-				.scope("message.read")
-				.scope("message.write")
-				.clientSettings(
-						ClientSettings.builder()
-								.x509CertificateSubjectDN("CN=demo-client-sample,OU=Spring Samples,O=Spring,C=US")
-								.jwkSetUrl("http://127.0.0.1:8080/jwks")
-								.build()
-				)
-				.tokenSettings(
-						TokenSettings.builder()
-								.x509CertificateBoundAccessTokens(true)
-								.build()
-				)
-				.build();
-
 		// Save registered client's in db as if in-memory
 		JdbcRegisteredClientRepository registeredClientRepository = new JdbcRegisteredClientRepository(jdbcTemplate);
-		registeredClientRepository.save(messagingClient);
-		registeredClientRepository.save(deviceClient);
-		registeredClientRepository.save(tokenExchangeClient);
-		registeredClientRepository.save(mtlsDemoClient);
 
+		/**
+		 * 在保存前，我们应验证即将存入的数据是否唯一，如果库中已存在，则无法完成当前操作
+		 */
+		RegisteredClient registeredClient = registeredClientRepository.findByClientId("messaging-client");
+		if(registeredClient == null){
+
+			RegisteredClient messagingClient = RegisteredClient.withId(UUID.randomUUID().toString())
+					.clientId("messaging-client")
+					.clientSecret("{noop}secret")
+					.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+					.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+					.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+					.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+					.redirectUri("http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc")
+					.redirectUri("http://127.0.0.1:8080/authorized")
+					.postLogoutRedirectUri("http://127.0.0.1:8080/logged-out")
+					.scope(OidcScopes.OPENID)
+					.scope(OidcScopes.PROFILE)
+					.scope("message.read")
+					.scope("message.write")
+					.scope("user.read")
+					.clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
+					.build();
+			registeredClientRepository.save(messagingClient);
+		}
+
+		registeredClient = registeredClientRepository.findByClientId("device-messaging-client");
+		if(registeredClient == null){
+
+			RegisteredClient deviceClient = RegisteredClient.withId(UUID.randomUUID().toString())
+					.clientId("device-messaging-client")
+					.clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
+					.authorizationGrantType(AuthorizationGrantType.DEVICE_CODE)
+					.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+					.scope("message.read")
+					.scope("message.write")
+					.build();
+			registeredClientRepository.save(deviceClient);
+		}
+
+		registeredClient = registeredClientRepository.findByClientId("token-client");
+		if(registeredClient == null){
+			RegisteredClient tokenExchangeClient = RegisteredClient.withId(UUID.randomUUID().toString())
+					.clientId("token-client")
+					.clientSecret("{noop}token")
+					.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+					.authorizationGrantType(new AuthorizationGrantType("urn:ietf:params:oauth:grant-type:token-exchange"))
+					.scope("message.read")
+					.scope("message.write")
+					.build();
+			registeredClientRepository.save(tokenExchangeClient);
+		}
+		registeredClient = registeredClientRepository.findByClientId("mtls-demo-client");
+		if(registeredClient == null){
+			RegisteredClient mtlsDemoClient = RegisteredClient.withId(UUID.randomUUID().toString())
+					.clientId("mtls-demo-client")
+					.clientAuthenticationMethod(ClientAuthenticationMethod.TLS_CLIENT_AUTH)
+					.clientAuthenticationMethod(ClientAuthenticationMethod.SELF_SIGNED_TLS_CLIENT_AUTH)
+					.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+					.scope("message.read")
+					.scope("message.write")
+					.clientSettings(
+							ClientSettings.builder()
+									.x509CertificateSubjectDN("CN=demo-client-sample,OU=Spring Samples,O=Spring,C=US")
+									.jwkSetUrl("http://127.0.0.1:8080/jwks")
+									.build()
+					)
+					.tokenSettings(
+							TokenSettings.builder()
+									.x509CertificateBoundAccessTokens(true)
+									.build()
+					)
+					.build();
+			registeredClientRepository.save(mtlsDemoClient);
+		}
 		return registeredClientRepository;
 	}
 	// @formatter:on
@@ -237,6 +271,10 @@ public class AuthorizationServerConfig {
 		return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource);
 	}
 
+	/**
+	 * 授权服务配置
+	 * @return
+	 */
 	@Bean
 	public AuthorizationServerSettings authorizationServerSettings() {
 		return AuthorizationServerSettings.builder().build();
