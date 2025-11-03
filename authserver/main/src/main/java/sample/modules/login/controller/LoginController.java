@@ -19,8 +19,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * @author Steve Riesenberg
- * @since 1.1
+ * TODO 写明类的作用
+ *
+ * @author Li.HongKun
+ * @project authserver
+ * @title 登录
+ * @package com.example.modules.login.controller
+ * @since 2023/9/1 20:16
  */
 @Controller
 public class LoginController {
