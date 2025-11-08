@@ -1,0 +1,11 @@
+= ImportRuntimeHints
+ImportRuntimeHints‌是一个Java注解，主要用于在运行时获取代码执行时的提示和反馈，从而帮助开发者优化代码性能。
+这个注解属于Spring Framework，并且是Spring Boot 3.0中的一个新特性‌[1][2]。
+
+== 使用场景和功能
+* 性能监控‌：开发者可以使用ImportRuntimeHints来实时监控应用程序的性能，发现潜在的性能问题。通过定期检查CPU使用率、内存占用、线程状态等关键性能指标，可以识别代码中的性能瓶颈‌1。
+* 实时调试‌：当出现性能问题时，ImportRuntimeHints可以提供更详细的性能数据，帮助开发者定位问题并进行实时调试‌1。
+* ‌代码优化‌：通过获取代码执行时的实时数据，开发者可以优化算法、减少内存使用、提高I/O效率等，从而提高代码的整体性能‌1。
+
+== 使用方法
+在Spring Boot应用中，可以通过在配置类上使用@ImportRuntimeHints注解来指定一个或多个RuntimeHintsRegistrar实现

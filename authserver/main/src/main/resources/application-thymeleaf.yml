@@ -1,0 +1,13 @@
+# Thymeleaf配置
+# 模板编码
+spring:
+  thymeleaf:
+    encoding: UTF-8
+  # 开发时关闭缓存，修改模板后无需重启应用
+    cache: false
+  # 模板模式
+    mode: HTML
+  # 模板前缀，默认就是classpath:/templates/
+    prefix: classpath:/templates/
+  # 模板后缀，默认就是.html
+    suffix: .html
