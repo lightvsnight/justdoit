@@ -18,7 +18,6 @@ package com.sample;
 import java.util.Arrays;
 
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.thymeleaf.expression.Lists;
 import com.sample.web.AuthorizationConsentController;
 
