@@ -1,8 +1,9 @@
-package org.example.generator;
+package org.sample.generator;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
+import com.baomidou.mybatisplus.generator.config.po.LikeTable;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 
 import java.util.ArrayList;
@@ -30,15 +31,15 @@ public class MybatisPlusCodeGenerator {
 
         //test为自定义的文件生成路径，根据业务进行变更
         //父包名，test为最终生成的包位置，替换成自己的即可
-        String parentPackage = "com.example.modules";
+        String parentPackage = "com.sample.modules";
         //mapper.xml生成位置，test变更为自己的即可
         String resources = "/src/main/resources/";
-        String mapperXmlPath = "/mapper/";
+        String mapperXmlPath = "/mappers/"+moduleName;
         //作者名字
         String author = "Li.HongKun";
 
         //数据库连接信息
-        String url = "jdbc:mysql://localhost:3306/auth-server?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai";
+        String url = "jdbc:mysql://localhost:3306/springauthserver?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai";
         String username = "root";
         String password = "root";
 
@@ -72,6 +73,10 @@ public class MybatisPlusCodeGenerator {
                 //策略配置
                 .strategyConfig(builder -> {
                     builder.addInclude(tables)
+//                            .enableCapitalMode() // 开启大写命名
+//                            .enableSkipView() // 开启跳过视图
+//                            .disableSqlFilter() // 禁用 SQL 过滤
+//                            .likeTable(new LikeTable("USER")) // 模糊匹配表名
 //                            .addTablePrefix("app_")//表名前缀，配置后生成的代码不会有此前缀，建议表名的驼峰格式命名，方便寻找对应的文件资料
                             .serviceBuilder()
                             .formatServiceFileName("%sService")//服务层接口名后缀
@@ -80,7 +85,7 @@ public class MybatisPlusCodeGenerator {
                             .entityBuilder()
 //                            .enableLombok()   //实体类使用lombok,需要自己引入依赖
                             .logicDeleteColumnName("del_flag")//逻辑删除字段，使用delete方法删除数据时会将status设置为1。调用update方法时并不会将该字段放入修改字段中，而是在条件字段中
-                            .enableTableFieldAnnotation()//加上字段注解@TableField
+                            .enableTableFieldAnnotation() //加上字段注解@TableField
                             .controllerBuilder()
                             .formatFileName("%sController")//控制类名称后缀
                             .enableRestStyle()

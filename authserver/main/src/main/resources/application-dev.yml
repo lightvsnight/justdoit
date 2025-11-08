@@ -1,71 +1,24 @@
-spring:
-  datasource:
-    # 配置jdbc 连接
-    driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/springauthserver?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
-    username: root
-    password: root
-    # 特指 Druid 连接池
-    type: com.alibaba.druid.pool.DruidDataSource
-    druid:
-      # 初始化大小
-      initialSize: 5
-      stat-view-servlet:
-        # 是否开启 StatViewServlet
-        enabled: true
-        url-pattern: /druid/
-        # 访问监控页面 白名单，默认127.0.0.1
-        allow: 127.0.0.1
-        # 访问监控页面 黑名单
-        deny: 192.168.56.1
-        # 访问监控页面 登陆账号
-        login-username: admin
-        # 访问监控页面 登陆密码
-        login-password: admin
-      filter:
-        stat:
-          # 是否开启 FilterStat，默认true
-          enabled: true
-          # 是否开启 慢SQL 记录，默认false
-          log-slow-sql: true
-          # 慢 SQL 的标准，默认 3000，单位：毫秒
-          slow-sql-millis: 5000
-          # 合并多个连接池的监控数据，默认false
-          merge-sql: false
-
-
-
-# mybatis-plus相关配置
-mybatis-plus:
-  # xml扫描，多个目录用逗号或者分号分隔（告诉 Mapper 所对应的 XML 文件位置）
-  mapper-locations: classpath:/mapper/**/*.xml #指定mapper.xml路径
-  # 以下配置均有默认值,可以不设置
-  global-config:
-    db-config:
-      #主键类型 AUTO:"数据库ID自增" INPUT:"用户输入ID", ASSIGN_ID:"全局唯一ID (数字类型唯一ID)", ASSIGN_UUID:"全局唯一ID UUID";
-      id-type: assign_uuid
-      #字段策略 IGNORED:"忽略判断"  NOT_NULL:"非 NULL 判断")  NOT_EMPTY:"非空判断"
-      field-strategy: NOT_EMPTY
-      #数据库类型
-      db-type: MYSQL
-      logic-delete-field: delFlag
-      # 删除前
-      logic-not-delete-value: 0
-      # 删除后
-      logic-delete-value: 1
-  configuration:
-    # 只对非嵌套的 resultMap 进行自动映射
-    auto-mapping-behavior: partial
-    # 是否开启自动驼峰命名规则映射:从数据库列名到Java属性驼峰命名的类似映射
-    map-underscore-to-camel-case: true
-    # 如果查询结果中包含空值的列，则 MyBatis 在映射的时候，不会映射这个字段
-    call-setters-on-nulls: true
-    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
-
 server:
-  port: 9000
+  port: 9443
+  ssl:
+    bundle: demo-authorizationserver
+    client-auth: want
+spring:
+  ssl:
+    bundle:
+      jks:
+        demo-authorizationserver:
+          key:
+            alias: demo-authorizationserver-sample
+            password: password
+          keystore:
+            location: classpath:keystore.p12
+            password: password
+            type: PKCS12
+          truststore:
+            location: classpath:keystore.p12
+            password: password
+            type: PKCS12
   security:
     oauth2:
       client:
@@ -87,39 +40,8 @@ server:
             user-name-attribute: email
           github:
             user-name-attribute: login
-        oidc-client:
-          registration:
-            client-id: "oidc-client"
-            client-secret: "{noop}secret"
-            client-authentication-methods:
-              - "client_secret_basic"
-            authorization-grant-types:
-              - "authorization_code"
-              - "refresh_token"
-            redirect-uris:
-              - "http://127.0.0.1:8080/login/oauth2/code/oidc-client"
-            post-logout-redirect-uris:
-              - "http://127.0.0.1:8080/"
-            scopes:
-              - "openid"
-              - "profile"
-          require-authorization-consent: true
     user:
       name: user
       password: password
       roles: ADMIN
-
-
-logging:
-  config: classpath:logback-spring.xml
-  charset:
-    file: utf-8
-  file:
-    name: authserver
-  level:
-    root: info
-    org.springframework.web: INFO
-    org.springframework.security: INFO
-    org.springframework.security.oauth2: INFO
-
 

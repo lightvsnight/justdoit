@@ -1,0 +1,9 @@
+#自定义info端点查看应用相关的信息info:
+info:
+  app:
+    name: "@project.name@"
+    version: "@project.version@"
+    description: "@project.description@"
+    encoding: "@project.build.sourceEncoding@"
+    java:
+      version: "@java.version@"

@@ -1,8 +1,9 @@
 spring:
   profiles:
     active: dev
-  config:
-    additional-location: classpath:/application-other.yml
+    group:
+      #springboot使用技巧：可根据功能对配置文件中的信息进行拆分，并制作成独立的配置文件
+      "dev": db,log,thymeleaf,version
 
 
 
