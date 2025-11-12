@@ -1,0 +1,5 @@
+授权码认证提供者
+-- 如果需要自定义则需要重写OAuth2AuthorizationCodeRequestAuthenticationProvider
+
+设备认证提供者
+-- 如果需要自定义则需要重写DeviceClientAuthenticationProvider
