@@ -35,6 +35,7 @@ import org.springframework.util.Assert;
 /**
  * @author Joe Grandja
  * @author Steve Riesenberg
+ * @author Li hongKun
  * @since 1.1
  * @see DeviceClientAuthenticationToken
  * @see DeviceClientAuthenticationConverter

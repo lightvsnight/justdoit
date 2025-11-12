@@ -15,14 +15,14 @@
 <body>
 <div class="container">
     <div class="row py-5">
-        <h1 class="text-center text-primary">App permissions</h1>
+        <h1 class="text-center text-primary">应用授权</h1>
     </div>
     <div class="row">
         <div class="col text-center">
             <p>
-                The application
+                应用程序
                 <span class="fw-bold text-primary" th:text="${clientId}"></span>
-                wants to access your account
+                想要访问您的帐户
                 <span class="fw-bold" th:text="${principalName}"></span>
             </p>
         </div>
@@ -39,8 +39,8 @@
     <div class="row pb-3">
         <div class="col text-center">
             <p>
-                The following permissions are requested by the above app.<br/>
-                Please review these and consent if you approve.
+                上述应用需要以下权限。<br/>
+                请您查看并同意授予这些权限。
             </p>
         </div>
     </div>
@@ -93,8 +93,8 @@
         <div class="col text-center">
             <p>
                 <small>
-                    Your consent to provide access is required.<br/>
-                    If you do not approve, click Cancel, in which case no information will be shared with the app.
+                    我们需要您同意才能提供访问权限。<br/>
+                    如果您不同意，请点击“取消”，在这种情况下，我们将不会与该应用共享任何信息。
                 </small>
             </p>
         </div>

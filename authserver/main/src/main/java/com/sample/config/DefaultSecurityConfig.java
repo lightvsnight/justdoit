@@ -71,21 +71,22 @@ public class DefaultSecurityConfig {
 				)
 				.formLogin(formLogin ->
 						formLogin
-								.loginPage("/login").defaultSuccessUrl("/home")
-								// 登录成功拦截
-								.successHandler(new SimpleUrlAuthenticationSuccessHandler("/home") {
-									@Override
-									public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-										super.onAuthenticationSuccess(request, response, authentication);
-									}
-								})
+								.loginPage("/login")
+								//.defaultSuccessUrl("/home")
+								// 登录成功拦截，此处不能默认地址，如果有三方客户端进行认证，则需要跳到指定的地址
+//								.successHandler(new SimpleUrlAuthenticationSuccessHandler("/home") {
+//									@Override
+//									public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+//										super.onAuthenticationSuccess(request, response, authentication);
+//									}
+//								})
 								// 登录失败拦截
-								.failureHandler(new SimpleUrlAuthenticationFailureHandler("/login"){
-									@Override public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)throws IOException, ServletException {
-										request.setAttribute("","");
-										super.onAuthenticationFailure(request,response,exception);
-									}
-								})
+//								.failureHandler(new SimpleUrlAuthenticationFailureHandler("/login"){
+//									@Override public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)throws IOException, ServletException {
+//										request.setAttribute("","");
+//										super.onAuthenticationFailure(request,response,exception);
+//									}
+//								})
 
 				)
 				.logout((logout) -> logout.logoutUrl("/logout").logoutSuccessUrl("/login")

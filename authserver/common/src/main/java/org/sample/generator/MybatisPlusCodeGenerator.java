@@ -27,7 +27,7 @@ public class MybatisPlusCodeGenerator {
         System.out.println("======================================");
 
         //模块名称
-        String moduleName = "account";
+        String moduleName = "tRegisteredClient";
 
         //test为自定义的文件生成路径，根据业务进行变更
         //父包名，test为最终生成的包位置，替换成自己的即可
@@ -45,7 +45,7 @@ public class MybatisPlusCodeGenerator {
 
         //表名集合
         List<String> tables = new ArrayList<>();
-        tables.add("t_account");
+        tables.add("t_registered_client");
 
         FastAutoGenerator.create(url, username, password)
                 //全局配置
