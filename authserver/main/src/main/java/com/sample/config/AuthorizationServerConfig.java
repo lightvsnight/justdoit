@@ -22,8 +22,12 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.sample.authentication.DeviceClientAuthenticationProvider;
+import com.sample.authentication.provider.OAuth2AuthorizationCodeRequestAuthenticationProvider;
 import com.sample.federation.FederatedIdentityIdTokenCustomizer;
 import com.sample.jose.Jwks;
+
+import com.sample.modules.tAuthorization.service.TAuthorizationService;
+//import com.sample.modules.tRegisteredClient.service.TRegisteredClientService;
 import com.sample.web.authentication.DeviceClientAuthenticationConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,9 +63,8 @@ import org.springframework.stereotype.Repository;
 import static org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer.authorizationServer;
 
 /**
- * @author Joe Grandja
- * @author Daniel Garnier-Moiroux
- * @author Steve Riesenberg
+ *
+ * @author Li HongKun
  * @since 1.1
  */
 @Configuration(proxyBeanMethods = false)
@@ -72,6 +75,9 @@ public class AuthorizationServerConfig {
 	 */
 	private static final String CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";
 
+
+	@Autowired
+	private TAuthorizationService tAuthorizationService;
 
 
 	@Bean
@@ -103,7 +109,11 @@ public class AuthorizationServerConfig {
 		DeviceClientAuthenticationProvider deviceClientAuthenticationProvider =
 				new DeviceClientAuthenticationProvider(registeredClientRepository);
 
+//		OAuth2AuthorizationCodeRequestAuthenticationProvider oAuth2AuthorizationCodeRequestAuthenticationProvider =
+//				new OAuth2AuthorizationCodeRequestAuthenticationProvider(registeredClientRepository, , );
+
 		OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = authorizationServer();
+
 
 		// @formatter:off
 		http
@@ -122,11 +132,12 @@ public class AuthorizationServerConfig {
 												.authenticationProvider(deviceClientAuthenticationProvider)
 								)
 								.authorizationEndpoint(authorizationEndpoint ->
-										authorizationEndpoint.consentPage(CUSTOM_CONSENT_PAGE_URI))
-								//.registeredClientRepository()
+										authorizationEndpoint.consentPage(CUSTOM_CONSENT_PAGE_URI)
+//												.authenticationProvider(oAuth2AuthorizationCodeRequestAuthenticationProvider)
+								)
+								.authorizationService(tAuthorizationService)
+//								.registeredClientRepository()
 								.oidc(Customizer.withDefaults())	// Enable OpenID Connect 1.0
-
-
 				)
 				.authorizeHttpRequests((authorize) ->
 						authorize.anyRequest().authenticated()
@@ -144,14 +155,14 @@ public class AuthorizationServerConfig {
 	}
 
 
-	/**
-	 * 以下内容，通过jdbc，初始化客户端信息。
-	 *  需要重写一下存储逻辑，在以下存储逻辑中，我们只能使用，springoauth2给出的固定表
-	 *  registeredClientRepository(): TheRegisteredClientRepository(必填项) 用于管理新客户和现有客户。
-	 * @param jdbcTemplate
-	 * @return
-	 */
-	// @formatter:off
+//	/**
+//	 * 以下内容，通过jdbc，初始化客户端信息。
+//	 *  需要重写一下存储逻辑，在以下存储逻辑中，我们只能使用，springoauth2给出的固定表
+//	 *  registeredClientRepository(): TheRegisteredClientRepository(必填项) 用于管理新客户和现有客户。
+//	 * @param jdbcTemplate
+//	 * @return
+//	 */
+//	// @formatter:off
 //	@Bean
 //	public JdbcRegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {// Save registered client's in db as if in-memory
 //
@@ -240,11 +251,11 @@ public class AuthorizationServerConfig {
 //	}
 	// @formatter:on
 
-	@Bean
-	public JdbcOAuth2AuthorizationService authorizationService(JdbcTemplate jdbcTemplate,
-															   RegisteredClientRepository registeredClientRepository) {
-		return new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
-	}
+//	@Bean
+//	public JdbcOAuth2AuthorizationService authorizationService(JdbcTemplate jdbcTemplate,
+//															   RegisteredClientRepository registeredClientRepository) {
+//		return new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
+//	}
 
 	@Bean
 	public JdbcOAuth2AuthorizationConsentService authorizationConsentService(JdbcTemplate jdbcTemplate,

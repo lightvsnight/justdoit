@@ -27,7 +27,7 @@ public class MybatisPlusCodeGenerator {
         System.out.println("======================================");
 
         //模块名称
-        String moduleName = "tRegisteredClient";
+        String moduleName = "tAuthorizationConsent";
 
         //test为自定义的文件生成路径，根据业务进行变更
         //父包名，test为最终生成的包位置，替换成自己的即可
@@ -45,7 +45,8 @@ public class MybatisPlusCodeGenerator {
 
         //表名集合
         List<String> tables = new ArrayList<>();
-        tables.add("t_registered_client");
+        tables.add("t_authorization_consent");
+
 
         FastAutoGenerator.create(url, username, password)
                 //全局配置
@@ -55,7 +56,7 @@ public class MybatisPlusCodeGenerator {
                             .author(author)   //作者名
 //                            .enableSwagger()     //开启 swagger 模式
                             .dateType(DateType.ONLY_DATE)   //时间策略
-//                            .fileOverride() //全局覆盖已有文件的配置已失效，已迁移到策略配置中
+//                          .fileOverride() //全局覆盖已有文件的配置已失效，已迁移到策略配置中
                             .commentDate("yyyy-MM-dd HH:mm:ss");   //注释日期
                 })
                 //包配置

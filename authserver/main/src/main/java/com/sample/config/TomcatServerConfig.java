@@ -24,8 +24,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 /**
- * @author Joe Grandja
- * @since 1.3
+ *
+ * @author Li HongKun
+ * @since 1.1
  */
 @Profile("!test")	// Exclude this from DemoAuthorizationServerApplicationTests and DemoAuthorizationServerConsentTests
 @Configuration(proxyBeanMethods = false)
