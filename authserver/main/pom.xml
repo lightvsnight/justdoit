@@ -85,20 +85,6 @@
             <version>2.20.0-rc1</version> <!-- 请使用最新版本 -->
         </dependency>
 
-
-
-        <!--       <dependency>-->
-<!--            <groupId>com.baomidou</groupId>-->
-<!--            <artifactId>mybatis-plus-boot4-starter</artifactId>-->
-<!--            <version>3.5.14</version>-->
-<!--           <exclusions>-->
-<!--               <exclusion>-->
-<!--                   <groupId>org.springframework.boot</groupId>-->
-<!--                   <artifactId>spring-boot-autoconfigure</artifactId>-->
-<!--               </exclusion>-->
-<!--           </exclusions>-->
-<!--        </dependency>-->
-
     </dependencies>
 
 </project>

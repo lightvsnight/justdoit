@@ -17,9 +17,6 @@ mybatis 3.5.19
 mybatis-plus 3.5.15
 
 
--- 本项目纯为国人提供学习使用，较为符合中低级开发者的开发和学习习惯，帮助大家学习新版spring-oauth2-authorization-server 2.0.0版本的使用。
-
-
-不可商用
+开源免责声明，请参考《免责声明.doc》
 
 
