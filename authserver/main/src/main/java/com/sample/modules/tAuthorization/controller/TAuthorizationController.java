@@ -1,4 +1,4 @@
-package com.sample.modules.tRegisteredClient.controller;
+package com.sample.modules.tAuthorization.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
  * </p>
  *
  * @author Li.HongKun
- * @since 2025-11-12 20:18:22
+ * @since 2025-11-30 19:46:59
  */
 @RestController
-@RequestMapping("/tRegisteredClient/tRegisteredClient")
-public class TRegisteredClientController {
+@RequestMapping("/tAuthorization/tAuthorization")
+public class TAuthorizationController {
 
 }

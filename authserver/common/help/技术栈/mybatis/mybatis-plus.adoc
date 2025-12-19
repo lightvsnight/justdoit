@@ -1,0 +1,5 @@
+技术参考地址
+使用的mybatis-plus 3.5.15 版本
+学习参考地址：
+    代码生成：https://baomidou.com/guides/new-code-generator/
+    自定义ID生成： https://baomidou.com/guides/id-generator/

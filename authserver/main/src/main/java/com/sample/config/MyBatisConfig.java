@@ -1,6 +1,10 @@
 package com.sample.config;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
+import com.baomidou.mybatisplus.core.config.GlobalConfig;
+import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
+import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
@@ -59,8 +63,28 @@ public class MyBatisConfig {
         // 可选：添加 MyBatis 插件（如分页插件）
         // sessionFactory.setPlugins(new Interceptor[]{new PageInterceptor()});
 
+
+
         return sessionFactory.getObject();
     }
+
+    @Bean
+    public GlobalConfig globalConfig() {
+        GlobalConfig globalConfig = new GlobalConfig();
+        globalConfig.setDbConfig(new com.baomidou.mybatisplus.core.config.GlobalConfig.DbConfig()
+                .setIdType(IdType.NONE)); // 设置全局ID生成策略为NONE
+
+        // 注册默认的雪花算法 ID 生成器（解决 identifierGenerator 为 null 的问题）
+        globalConfig.setIdentifierGenerator(new DefaultIdentifierGenerator());
+
+        return globalConfig;
+    }
+
+    @Bean
+    public IdentifierGenerator idGenerator() {
+        return new DefaultIdentifierGenerator();
+    }
+
 
     /**
      * 配置事务管理器（可选，如需事务支持）
@@ -69,4 +93,5 @@ public class MyBatisConfig {
     public PlatformTransactionManager transactionManager(DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }
+
 }

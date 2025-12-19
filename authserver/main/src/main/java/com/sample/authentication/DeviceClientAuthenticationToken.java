@@ -23,9 +23,9 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2ClientAuthenticationToken;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 
-/**
- * @author Joe Grandja
- * @author Steve Riesenberg
+ /**
+ *
+ * @author Li HongKun
  * @since 1.1
  */
 @Transient
