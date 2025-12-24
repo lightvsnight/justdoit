@@ -32,8 +32,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 
-        <springboot.version>4.0.0-M2</springboot.version>
-        <springboot.start.version>4.0.0-M2</springboot.start.version>
+        <springboot.version>4.0.1</springboot.version>
+        <springboot.start.version>4.0.1</springboot.start.version>
     </properties>
 
     <dependencies>
