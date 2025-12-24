@@ -16,6 +16,11 @@ master
 mybatis 3.5.19
 mybatis-plus 3.5.15
 
+--------新增分支0.0.1-------
+master分支在重写认证服务端的OAuth2AuthorizationServerConfigurer类型，发现依赖的子类，大部分为私有类和方法，禁止访问或重写。
+所以，需要切换依赖的版本，以寻找重写认证端的改造方法。
+
+
 开源免责声明，请参考《免责声明.doc》
 
 
