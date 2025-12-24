@@ -1,20 +1,5 @@
 package com.sample.authentication.provider;
 
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
-import java.security.Principal;
-import java.time.Instant;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.core.log.LogMessage;
@@ -27,12 +12,7 @@ import org.springframework.security.crypto.keygen.StringKeyGenerator;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
-import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
-import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationCode;
-import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsent;
-import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
-import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
-import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
+import org.springframework.security.oauth2.server.authorization.*;
 import org.springframework.security.oauth2.server.authorization.authentication.*;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
@@ -42,12 +22,14 @@ import org.springframework.security.oauth2.server.authorization.token.OAuth2Toke
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-/**
- *
- * @author Li HongKun
- * @since 1.1
- */
-public final class OAuth2AuthorizationCodeRequestAuthenticationProvider implements AuthenticationProvider {
+
+import java.security.Principal;
+import java.time.Instant;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+
+public class Custom_OAuth2AuthorizationCodeAuthenticationProvider implements AuthenticationProvider {
     private static final String ERROR_URI = "https://datatracker.ietf.org/doc/html/rfc6749#section-4.1.2.1";
     private static final OAuth2TokenType STATE_TOKEN_TYPE = new OAuth2TokenType("state");
     private static final StringKeyGenerator DEFAULT_STATE_GENERATOR = new Base64StringKeyGenerator(Base64.getUrlEncoder());
@@ -59,7 +41,7 @@ public final class OAuth2AuthorizationCodeRequestAuthenticationProvider implemen
     private Consumer<OAuth2AuthorizationCodeRequestAuthenticationContext> authenticationValidator = new OAuth2AuthorizationCodeRequestAuthenticationValidator();
     private Predicate<OAuth2AuthorizationCodeRequestAuthenticationContext> authorizationConsentRequired = OAuth2AuthorizationCodeRequestAuthenticationProvider::isAuthorizationConsentRequired;
 
-    public OAuth2AuthorizationCodeRequestAuthenticationProvider(RegisteredClientRepository registeredClientRepository, OAuth2AuthorizationService authorizationService, OAuth2AuthorizationConsentService authorizationConsentService) {
+    public Custom_OAuth2AuthorizationCodeAuthenticationProvider(RegisteredClientRepository registeredClientRepository, OAuth2AuthorizationService authorizationService, OAuth2AuthorizationConsentService authorizationConsentService) {
         Assert.notNull(registeredClientRepository, "registeredClientRepository cannot be null");
         Assert.notNull(authorizationService, "authorizationService cannot be null");
         Assert.notNull(authorizationConsentService, "authorizationConsentService cannot be null");
@@ -90,7 +72,11 @@ public final class OAuth2AuthorizationCodeRequestAuthenticationProvider implemen
                 this.logger.trace("Retrieved authorization with pushed authorization request");
             }
 
-//            OAuth2AuthorizationRequest authorizationRequest = (OAuth2AuthorizationRequest)pushedAuthorization.getAttribute(OAuth2AuthorizationRequest.class.getName());
+            /**
+             *
+             */
+            //OAuth2AuthorizationRequest authorizationRequest = (OAuth2AuthorizationRequest)pushedAuthorization.getAttribute(OAuth2AuthorizationRequest.class.getName());
+
             Map<String,Object> map  = pushedAuthorization.getAttribute(OAuth2AuthorizationRequest.class.getName());
 
             String cleanStr = map.get("scopes").toString().replace("[", "").replace("]", "").replace(" ", "");
@@ -106,6 +92,7 @@ public final class OAuth2AuthorizationCodeRequestAuthenticationProvider implemen
                     .scopes(scopeSet)
                     .additionalParameters((Map)map.get("additionalParameters"))
                     .build();
+
 
             if (!authorizationCodeRequestAuthentication.getClientId().equals(authorizationRequest.getClientId())) {
                 throwError("invalid_request", "client_id", authorizationCodeRequestAuthentication, (RegisteredClient)null);
@@ -147,7 +134,7 @@ public final class OAuth2AuthorizationCodeRequestAuthenticationProvider implemen
         }
 
         if (this.logger.isTraceEnabled()) {
-            this.logger.trace("Validated authorization code ");
+            this.logger.trace("Validated authorization code request parameters");
         }
 
         Authentication principal = (Authentication)authorizationCodeRequestAuthentication.getPrincipal();
@@ -252,12 +239,7 @@ public final class OAuth2AuthorizationCodeRequestAuthenticationProvider implemen
         this.authorizationConsentRequired = authorizationConsentRequired;
     }
 
-    /**
-     * 这里将私有改为公有方法。
-     * @param authenticationContext
-     * @return
-     */
-    public static boolean isAuthorizationConsentRequired(OAuth2AuthorizationCodeRequestAuthenticationContext authenticationContext) {
+    private static boolean isAuthorizationConsentRequired(OAuth2AuthorizationCodeRequestAuthenticationContext authenticationContext) {
         if (!authenticationContext.getRegisteredClient().getClientSettings().isRequireAuthorizationConsent()) {
             return false;
         } else if (authenticationContext.getAuthorizationRequest().getScopes().contains("openid") && authenticationContext.getAuthorizationRequest().getScopes().size() == 1) {
@@ -312,4 +294,5 @@ public final class OAuth2AuthorizationCodeRequestAuthenticationProvider implemen
             return registeredClient != null ? (String)registeredClient.getRedirectUris().iterator().next() : null;
         }
     }
+
 }

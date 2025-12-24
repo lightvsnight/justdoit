@@ -32,7 +32,7 @@ public final class OAuth2AuthorizationCodeRequestAuthenticationValidator impleme
     private static final String ERROR_URI = "https://datatracker.ietf.org/doc/html/rfc6749#section-4.1.2.1";
     private static final String PKCE_ERROR_URI = "https://datatracker.ietf.org/doc/html/rfc7636#section-4.4.1";
     private static final Log LOGGER = LogFactory.getLog(org.springframework.security.oauth2.server.authorization.authentication.OAuth2AuthorizationCodeRequestAuthenticationValidator.class);
-    static final Consumer<OAuth2AuthorizationCodeRequestAuthenticationContext> DEFAULT_AUTHORIZATION_GRANT_TYPE_VALIDATOR = OAuth2AuthorizationCodeRequestAuthenticationValidator::validateAuthorizationGrantType;
+    public static final Consumer<OAuth2AuthorizationCodeRequestAuthenticationContext> DEFAULT_AUTHORIZATION_GRANT_TYPE_VALIDATOR = OAuth2AuthorizationCodeRequestAuthenticationValidator::validateAuthorizationGrantType;
     static final Consumer<OAuth2AuthorizationCodeRequestAuthenticationContext> DEFAULT_CODE_CHALLENGE_VALIDATOR = OAuth2AuthorizationCodeRequestAuthenticationValidator::validateCodeChallenge;
     static final Consumer<OAuth2AuthorizationCodeRequestAuthenticationContext> DEFAULT_PROMPT_VALIDATOR = OAuth2AuthorizationCodeRequestAuthenticationValidator::validatePrompt;
     public static final Consumer<OAuth2AuthorizationCodeRequestAuthenticationContext> DEFAULT_REDIRECT_URI_VALIDATOR = OAuth2AuthorizationCodeRequestAuthenticationValidator::validateRedirectUri;

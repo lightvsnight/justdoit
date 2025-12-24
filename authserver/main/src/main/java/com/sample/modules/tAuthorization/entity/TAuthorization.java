@@ -22,6 +22,7 @@ public class TAuthorization implements Serializable {
     private static final long serialVersionUID = 1L;
 
 
+    @TableId(value = "id", type = IdType.INPUT)
     private String id;
 
     @TableField("registered_client_id")
@@ -37,13 +38,13 @@ public class TAuthorization implements Serializable {
     private String authorizedScopes;
 
     @TableField("attributes")
-    private byte[] attributes;
+    private String attributes;
 
     @TableField("state")
     private String state;
 
     @TableField("authorization_code_value")
-    private byte[] authorizationCodeValue;
+    private String authorizationCodeValue;
 
     @TableField("authorization_code_issued_at")
     private Date authorizationCodeIssuedAt;
@@ -52,10 +53,10 @@ public class TAuthorization implements Serializable {
     private Date authorizationCodeExpiresAt;
 
     @TableField("authorization_code_metadata")
-    private byte[] authorizationCodeMetadata;
+    private String authorizationCodeMetadata;
 
     @TableField("access_token_value")
-    private byte[] accessTokenValue;
+    private String accessTokenValue;
 
     @TableField("access_token_issued_at")
     private Date accessTokenIssuedAt;
@@ -64,7 +65,7 @@ public class TAuthorization implements Serializable {
     private Date accessTokenExpiresAt;
 
     @TableField("access_token_metadata")
-    private byte[] accessTokenMetadata;
+    private String accessTokenMetadata;
 
     @TableField("access_token_type")
     private String accessTokenType;
@@ -73,7 +74,7 @@ public class TAuthorization implements Serializable {
     private String accessTokenScopes;
 
     @TableField("oidc_id_token_value")
-    private byte[] oidcIdTokenValue;
+    private String oidcIdTokenValue;
 
     @TableField("oidc_id_token_issued_at")
     private Date oidcIdTokenIssuedAt;
@@ -82,10 +83,10 @@ public class TAuthorization implements Serializable {
     private Date oidcIdTokenExpiresAt;
 
     @TableField("oidc_id_token_metadata")
-    private byte[] oidcIdTokenMetadata;
+    private String oidcIdTokenMetadata;
 
     @TableField("refresh_token_value")
-    private byte[] refreshTokenValue;
+    private String refreshTokenValue;
 
     @TableField("refresh_token_issued_at")
     private Date refreshTokenIssuedAt;
@@ -94,10 +95,10 @@ public class TAuthorization implements Serializable {
     private Date refreshTokenExpiresAt;
 
     @TableField("refresh_token_metadata")
-    private byte[] refreshTokenMetadata;
+    private String refreshTokenMetadata;
 
     @TableField("user_code_value")
-    private byte[] userCodeValue;
+    private String userCodeValue;
 
     @TableField("user_code_issued_at")
     private Date userCodeIssuedAt;
@@ -106,10 +107,10 @@ public class TAuthorization implements Serializable {
     private Date userCodeExpiresAt;
 
     @TableField("user_code_metadata")
-    private byte[] userCodeMetadata;
+    private String userCodeMetadata;
 
     @TableField("device_code_value")
-    private byte[] deviceCodeValue;
+    private String deviceCodeValue;
 
     @TableField("device_code_issued_at")
     private Date deviceCodeIssuedAt;
@@ -118,7 +119,7 @@ public class TAuthorization implements Serializable {
     private Date deviceCodeExpiresAt;
 
     @TableField("device_code_metadata")
-    private byte[] deviceCodeMetadata;
+    private String deviceCodeMetadata;
 
     public String getId() {
         return id;
@@ -160,11 +161,11 @@ public class TAuthorization implements Serializable {
         this.authorizedScopes = authorizedScopes;
     }
 
-    public byte[] getAttributes() {
+    public String getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(byte[] attributes) {
+    public void setAttributes(String attributes) {
         this.attributes = attributes;
     }
 
@@ -176,11 +177,11 @@ public class TAuthorization implements Serializable {
         this.state = state;
     }
 
-    public byte[] getAuthorizationCodeValue() {
+    public String getAuthorizationCodeValue() {
         return authorizationCodeValue;
     }
 
-    public void setAuthorizationCodeValue(byte[] authorizationCodeValue) {
+    public void setAuthorizationCodeValue(String authorizationCodeValue) {
         this.authorizationCodeValue = authorizationCodeValue;
     }
 
@@ -200,19 +201,19 @@ public class TAuthorization implements Serializable {
         this.authorizationCodeExpiresAt = authorizationCodeExpiresAt;
     }
 
-    public byte[] getAuthorizationCodeMetadata() {
+    public String getAuthorizationCodeMetadata() {
         return authorizationCodeMetadata;
     }
 
-    public void setAuthorizationCodeMetadata(byte[] authorizationCodeMetadata) {
+    public void setAuthorizationCodeMetadata(String authorizationCodeMetadata) {
         this.authorizationCodeMetadata = authorizationCodeMetadata;
     }
 
-    public byte[] getAccessTokenValue() {
+    public String getAccessTokenValue() {
         return accessTokenValue;
     }
 
-    public void setAccessTokenValue(byte[] accessTokenValue) {
+    public void setAccessTokenValue(String accessTokenValue) {
         this.accessTokenValue = accessTokenValue;
     }
 
@@ -232,11 +233,11 @@ public class TAuthorization implements Serializable {
         this.accessTokenExpiresAt = accessTokenExpiresAt;
     }
 
-    public byte[] getAccessTokenMetadata() {
+    public String getAccessTokenMetadata() {
         return accessTokenMetadata;
     }
 
-    public void setAccessTokenMetadata(byte[] accessTokenMetadata) {
+    public void setAccessTokenMetadata(String accessTokenMetadata) {
         this.accessTokenMetadata = accessTokenMetadata;
     }
 
@@ -256,11 +257,11 @@ public class TAuthorization implements Serializable {
         this.accessTokenScopes = accessTokenScopes;
     }
 
-    public byte[] getOidcIdTokenValue() {
+    public String getOidcIdTokenValue() {
         return oidcIdTokenValue;
     }
 
-    public void setOidcIdTokenValue(byte[] oidcIdTokenValue) {
+    public void setOidcIdTokenValue(String oidcIdTokenValue) {
         this.oidcIdTokenValue = oidcIdTokenValue;
     }
 
@@ -280,19 +281,19 @@ public class TAuthorization implements Serializable {
         this.oidcIdTokenExpiresAt = oidcIdTokenExpiresAt;
     }
 
-    public byte[] getOidcIdTokenMetadata() {
+    public String getOidcIdTokenMetadata() {
         return oidcIdTokenMetadata;
     }
 
-    public void setOidcIdTokenMetadata(byte[] oidcIdTokenMetadata) {
+    public void setOidcIdTokenMetadata(String oidcIdTokenMetadata) {
         this.oidcIdTokenMetadata = oidcIdTokenMetadata;
     }
 
-    public byte[] getRefreshTokenValue() {
+    public String getRefreshTokenValue() {
         return refreshTokenValue;
     }
 
-    public void setRefreshTokenValue(byte[] refreshTokenValue) {
+    public void setRefreshTokenValue(String refreshTokenValue) {
         this.refreshTokenValue = refreshTokenValue;
     }
 
@@ -312,19 +313,19 @@ public class TAuthorization implements Serializable {
         this.refreshTokenExpiresAt = refreshTokenExpiresAt;
     }
 
-    public byte[] getRefreshTokenMetadata() {
+    public String getRefreshTokenMetadata() {
         return refreshTokenMetadata;
     }
 
-    public void setRefreshTokenMetadata(byte[] refreshTokenMetadata) {
+    public void setRefreshTokenMetadata(String refreshTokenMetadata) {
         this.refreshTokenMetadata = refreshTokenMetadata;
     }
 
-    public byte[] getUserCodeValue() {
+    public String getUserCodeValue() {
         return userCodeValue;
     }
 
-    public void setUserCodeValue(byte[] userCodeValue) {
+    public void setUserCodeValue(String userCodeValue) {
         this.userCodeValue = userCodeValue;
     }
 
@@ -344,19 +345,19 @@ public class TAuthorization implements Serializable {
         this.userCodeExpiresAt = userCodeExpiresAt;
     }
 
-    public byte[] getUserCodeMetadata() {
+    public String getUserCodeMetadata() {
         return userCodeMetadata;
     }
 
-    public void setUserCodeMetadata(byte[] userCodeMetadata) {
+    public void setUserCodeMetadata(String userCodeMetadata) {
         this.userCodeMetadata = userCodeMetadata;
     }
 
-    public byte[] getDeviceCodeValue() {
+    public String getDeviceCodeValue() {
         return deviceCodeValue;
     }
 
-    public void setDeviceCodeValue(byte[] deviceCodeValue) {
+    public void setDeviceCodeValue(String deviceCodeValue) {
         this.deviceCodeValue = deviceCodeValue;
     }
 
@@ -376,11 +377,11 @@ public class TAuthorization implements Serializable {
         this.deviceCodeExpiresAt = deviceCodeExpiresAt;
     }
 
-    public byte[] getDeviceCodeMetadata() {
+    public String getDeviceCodeMetadata() {
         return deviceCodeMetadata;
     }
 
-    public void setDeviceCodeMetadata(byte[] deviceCodeMetadata) {
+    public void setDeviceCodeMetadata(String deviceCodeMetadata) {
         this.deviceCodeMetadata = deviceCodeMetadata;
     }
 

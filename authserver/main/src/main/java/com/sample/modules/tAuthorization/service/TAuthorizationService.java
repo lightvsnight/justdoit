@@ -13,5 +13,4 @@ import org.springframework.security.oauth2.server.authorization.OAuth2Authorizat
  * @since 2025-11-30 19:46:59
  */
 public interface TAuthorizationService extends IService<TAuthorization>,OAuth2AuthorizationService {
-
 }

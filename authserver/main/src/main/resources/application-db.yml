@@ -30,3 +30,15 @@ spring:
       transaction-isolation: TRANSACTION_READ_COMMITTED
       #是否将连接设置为只读模式，默认false
       readonly: false
+
+mybatis-plus:
+  type-aliases-package: com.sample.modules.**.mapper.**
+  # Mapper XML文件位置
+  mapper-locations: classpath*:/mappers/**/*.xml
+  configuration:
+    # 驼峰命名映射
+    map-underscore-to-camel-case: true
+    # 空值字段映射
+    call-setters-on-nulls: true
+    # SQL日志输出
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

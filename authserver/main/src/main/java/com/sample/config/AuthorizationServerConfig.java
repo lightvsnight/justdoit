@@ -22,12 +22,15 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.sample.authentication.DeviceClientAuthenticationProvider;
+import com.sample.authentication.provider.Custom_ClientSecretAuthenticationProvider;
+import com.sample.authentication.provider.Custom_OAuth2AuthorizationCodeAuthenticationProvider;
 import com.sample.authentication.provider.OAuth2AuthorizationCodeRequestAuthenticationProvider;
 import com.sample.federation.FederatedIdentityIdTokenCustomizer;
 import com.sample.jose.Jwks;
 
 import com.sample.modules.tAuthorization.service.TAuthorizationService;
 //import com.sample.modules.tRegisteredClient.service.TRegisteredClientService;
+import com.sample.modules.tRegisteredClient.service.TRegisteredClientService;
 import com.sample.web.authentication.DeviceClientAuthenticationConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +48,7 @@ import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
+import org.springframework.security.oauth2.server.authorization.authentication.ClientSecretAuthenticationProvider;
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
@@ -61,6 +65,7 @@ import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 import org.springframework.stereotype.Repository;
 
 import static org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer.authorizationServer;
+
 
 /**
  *
@@ -79,11 +84,14 @@ public class AuthorizationServerConfig {
 	@Autowired
 	private TAuthorizationService tAuthorizationService;
 
+	@Autowired
+	private TRegisteredClientService tRegisteredClientService;
+
 
 	@Bean
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	public SecurityFilterChain authorizationServerSecurityFilterChain(
-			HttpSecurity http, RegisteredClientRepository registeredClientRepository,
+			HttpSecurity http, RegisteredClientRepository registeredClientRepository,JdbcOAuth2AuthorizationConsentService consentService,
 			AuthorizationServerSettings authorizationServerSettings) throws Exception {
 
 		/*
@@ -109,12 +117,25 @@ public class AuthorizationServerConfig {
 		DeviceClientAuthenticationProvider deviceClientAuthenticationProvider =
 				new DeviceClientAuthenticationProvider(registeredClientRepository);
 
-//		OAuth2AuthorizationCodeRequestAuthenticationProvider oAuth2AuthorizationCodeRequestAuthenticationProvider =
-//				new OAuth2AuthorizationCodeRequestAuthenticationProvider(registeredClientRepository, , );
+		OAuth2AuthorizationCodeRequestAuthenticationProvider oAuth2AuthorizationCodeRequestAuthenticationProvider =
+				new OAuth2AuthorizationCodeRequestAuthenticationProvider(registeredClientRepository, tAuthorizationService, consentService);
 
-		OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = authorizationServer();
+//		ClientSecretAuthenticationProvider clientSecretAuthenticationProvider = new ClientSecretAuthenticationProvider(registeredClientRepository,tAuthorizationService);
+		Custom_OAuth2AuthorizationCodeAuthenticationProvider auth2AuthorizationCodeAuthenticationProvider =
+				new Custom_OAuth2AuthorizationCodeAuthenticationProvider(registeredClientRepository,tAuthorizationService,consentService);
+
+		Custom_ClientSecretAuthenticationProvider clientSecretAuthenticationProvider = new Custom_ClientSecretAuthenticationProvider(registeredClientRepository,tAuthorizationService);
 
 
+		/**
+		 * 依赖 spring-security 7.0.2时，可选择这样的写法。
+		 */
+//		OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
+		/**
+		 * 依赖 spring-authorization-server 时，是这样的写法。
+		 */
+//		OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = authorizationServer();
+		OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
 		// @formatter:off
 		http
 				.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
@@ -130,11 +151,15 @@ public class AuthorizationServerConfig {
 										clientAuthentication
 												.authenticationConverter(deviceClientAuthenticationConverter)
 												.authenticationProvider(deviceClientAuthenticationProvider)
+												.authenticationProvider(clientSecretAuthenticationProvider)
+//												.authenticationProvider(auth2AuthorizationCodeAuthenticationProvider)
 								)
 								.authorizationEndpoint(authorizationEndpoint ->
 										authorizationEndpoint.consentPage(CUSTOM_CONSENT_PAGE_URI)
-//												.authenticationProvider(oAuth2AuthorizationCodeRequestAuthenticationProvider)
+												.authenticationProvider(auth2AuthorizationCodeAuthenticationProvider)
+												.authenticationProvider(oAuth2AuthorizationCodeRequestAuthenticationProvider)
 								)
+
 								.authorizationService(tAuthorizationService)
 //								.registeredClientRepository()
 								.oidc(Customizer.withDefaults())	// Enable OpenID Connect 1.0
@@ -252,7 +277,7 @@ public class AuthorizationServerConfig {
 	// @formatter:on
 
 //	@Bean
-//	public JdbcOAuth2AuthorizationService authorizationService(JdbcTemplate jdbcTemplate,
+//	public JdbcOAuth2AuthorizationService jdbcAuthorizationService(JdbcTemplate jdbcTemplate,
 //															   RegisteredClientRepository registeredClientRepository) {
 //		return new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
 //	}

@@ -14,8 +14,6 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <alibaba.druid.version>1.2.23</alibaba.druid.version>
-
     </properties>
 
 

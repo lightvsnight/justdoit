@@ -29,7 +29,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 // 扫描 Mapper 接口所在包（替换为实际路径）
-@MapperScan("com.sample.modules.**.mapper.**")
+@MapperScan({"com.sample.modules.**.mapper.**"})
 @EnableTransactionManagement //告诉它这是个事务
 public class MyBatisConfig {
 
